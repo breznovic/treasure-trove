@@ -1,0 +1,11 @@
+.disabled {
+  color: #7a7575;
+  border: none;
+  cursor: not-allowed;
+}
+
+.active {
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+}
