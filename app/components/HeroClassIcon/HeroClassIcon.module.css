@@ -1,0 +1,22 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+  font-size: 18px;
+}
+
+.image {
+  border: 2px solid black;
+  cursor: pointer;
+}
+
+.image:hover {
+  transform: scale(1.1);
+  border: 3px solid black;
+}
+
+.active {
+  border: 5px solid goldenrod;
+  cursor: pointer;
+}
