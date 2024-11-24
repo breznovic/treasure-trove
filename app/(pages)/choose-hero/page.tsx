@@ -4,14 +4,24 @@ import { Button } from "@/app/components/Button/Button";
 import s from "./page.module.css";
 import Link from "next/link";
 import HeroClassIcon from "@/app/components/HeroClassIcon/HeroClassIcon";
-import { useLiveQuery } from "dexie-react-hooks";
-import { db } from "@/lib/db/heroes/db";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { HeroClass } from "@/app/utils/types/heroesTypes";
+import Parameters from "@/app/components/Parameters/Parameters";
 
 export default function ChooseHero() {
-  const heroesClasses = useLiveQuery(() => db.heroesClasses.toArray());
-
+  const [heroesClasses, setHeroesClasses] = useState<HeroClass[]>([]);
   const [activeId, setActiveId] = useState<number | null>(null);
+
+  useEffect(() => {
+    const fetchHeroesClasses = async () => {
+      const response = await fetch("/api/heroes");
+      const data = await response.json();
+      setHeroesClasses(data);
+    };
+    fetchHeroesClasses();
+  }, []);
+
+  let points = 0;
 
   return (
     <main className={s.main}>
@@ -22,15 +32,24 @@ export default function ChooseHero() {
             key={h.id}
             title={h.title}
             bonus={h.bonus}
-            image={h.image}
+            imageUrl={h.imageUrl}
             isActive={activeId === h.id}
             onClick={() => setActiveId(h.id === activeId ? null : h.id)}
           />
         ))}
       </div>
-      <Link href="/town">
-        <Button title="Go to the town" />
-      </Link>
+      {activeId && (
+        <div className={s.parameters}>
+          <h2>Distribute the parameters</h2>
+          <div className={s.points}>Avalaible points: {points} </div>
+          <Parameters />
+        </div>
+      )}
+      {points === 0 && (
+        <Link href="/town">
+          <Button title="Go to the town" />
+        </Link>
+      )}
     </main>
   );
 }

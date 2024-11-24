@@ -7,6 +7,7 @@ type Props = {
   className?: string;
   disabled?: boolean;
   onClick?: () => void;
+  type?: string;
 };
 
 export const Button = (props: Props) => {

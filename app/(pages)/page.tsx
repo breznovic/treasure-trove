@@ -15,7 +15,7 @@ export default function Home() {
         alt="Treasure chest"
         className={s.image}
       />
-      <Link href="/choose-hero">
+      <Link href="/login">
         <Button title="Start your journey" />
       </Link>
     </main>

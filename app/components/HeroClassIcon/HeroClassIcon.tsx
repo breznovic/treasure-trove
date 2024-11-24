@@ -4,19 +4,19 @@ import Image from "next/image";
 type Props = {
   title: string;
   bonus: string;
-  image: string;
+  imageUrl: string;
   isActive: boolean;
   onClick?: () => void;
 };
 const HeroClassIcon = (props: Props) => {
-  const { title, bonus, image, isActive, onClick } = props;
+  const { title, bonus, imageUrl, isActive, onClick } = props;
 
   return (
     <div className={s.container}>
       <h4>{title}</h4>
       <i>{bonus}</i>
       <Image
-        src={image}
+        src={imageUrl}
         alt={title}
         width={100}
         height={100}
