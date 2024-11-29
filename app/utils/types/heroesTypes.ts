@@ -8,16 +8,16 @@ export type HeroClass = {
 export type HeroParameter = {
   id: number;
   title: string;
-  value: number
-}
+  value: number;
+};
 
 export type Hero = {
   id: number;
   class: HeroClass;
-  parameters: HeroParameter[]
-  level: number
-  HP: number
-  maxHP: number
-  XP: number
-  points: number
-}
+  parameters: HeroParameter[];
+  level: number;
+  HP: number;
+  maxHP: number;
+  XP: number;
+  points: number;
+};

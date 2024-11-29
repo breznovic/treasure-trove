@@ -1,12 +1,10 @@
-import { HeroType } from "./heroesTypes";
+import { Hero } from "./heroesTypes";
 
 export type User = {
-  id: number;
+  id: string;
   username: string;
-  email: string;
-  password: string;
-  isAuthenticated: boolean;
-  hero: HeroType | null;
+  hero: Hero | null;
+  currentScore: number;
   maxScore: number;
 };
 

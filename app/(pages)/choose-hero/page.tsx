@@ -4,22 +4,14 @@ import { Button } from "@/app/components/Button/Button";
 import s from "./page.module.css";
 import Link from "next/link";
 import HeroClassIcon from "@/app/components/HeroClassIcon/HeroClassIcon";
-import { useEffect, useState } from "react";
-import { HeroClass } from "@/app/utils/types/heroesTypes";
+import { useState } from "react";
 import Parameters from "@/app/components/Parameters/Parameters";
+import { heroesClasses } from "@/app/utils/constants";
+import { useUserStore } from "@/lib/store";
 
 export default function ChooseHero() {
-  const [heroesClasses, setHeroesClasses] = useState<HeroClass[]>([]);
   const [activeId, setActiveId] = useState<number | null>(null);
-
-  useEffect(() => {
-    const fetchHeroesClasses = async () => {
-      const response = await fetch("/api/heroes");
-      const data = await response.json();
-      setHeroesClasses(data);
-    };
-    fetchHeroesClasses();
-  }, []);
+  const users = useUserStore((state) => state.users);
 
   let points = 0;
 
@@ -27,7 +19,7 @@ export default function ChooseHero() {
     <main className={s.main}>
       <h1>Choose your hero</h1>
       <div className={s.container}>
-        {heroesClasses?.map((h, index) => (
+        {heroesClasses.map((h) => (
           <HeroClassIcon
             key={h.id}
             title={h.title}
@@ -38,6 +30,7 @@ export default function ChooseHero() {
           />
         ))}
       </div>
+      {JSON.stringify(users, null, 2)}
       {activeId && (
         <div className={s.parameters}>
           <h2>Distribute the parameters</h2>

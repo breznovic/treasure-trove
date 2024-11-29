@@ -3,14 +3,31 @@
 import { Button } from "@/app/components/Button/Button";
 import s from "./page.module.css";
 import Image from "next/image";
-import { useState } from "react";
+import { ChangeEvent, useState } from "react";
 import Link from "next/link";
-import { User } from "@/app/utils/types/usersTypes";
+import { useForm, SubmitHandler, FieldValues } from "react-hook-form";
+import { useUserStore } from "@/lib/store";
 
 export default function LoginPage() {
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    clearErrors,
+  } = useForm({ mode: "all" });
+
   const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
-  const [email, setEmail] = useState("");
+  const createUser = useUserStore((state) => state.createUser);
+
+  const setNewUsername = (e: ChangeEvent<HTMLInputElement>) =>
+    setUsername(e.target.value);
+
+  const onSubmit: SubmitHandler<FieldValues> = (data) => {
+    console.log("Form submitted with username:", username);
+    createUser(username);
+  };
+
+  console.log("Rendering LoginPage with username:", username);
 
   return (
     <div className={s.main}>
@@ -22,39 +39,37 @@ export default function LoginPage() {
         height={550}
         className={s.image}
       />
-      <form onSubmit={(e) => e.preventDefault()} className={s.form}>
+      <form onSubmit={handleSubmit(onSubmit)} className={s.form}>
         <label className={s.label}>
-          Username:
+          Enter your name:
           <input
+            {...register("Username", {
+              required: "Username is required",
+              minLength: {
+                value: 1,
+                message: "Username must be at least 1 character long",
+              },
+            })}
             type="text"
             value={username}
             placeholder="Username"
-            onChange={(e) => setUsername(e.target.value)}
+            onChange={(e) => {
+              setNewUsername(e);
+              clearErrors("Username");
+            }}
             className={s.input}
           />
+          {errors.Username && (
+            <span className={s.error}>{errors.Username.message as string}</span>
+          )}
         </label>
-        <label className={s.label}>
-          Email:
-          <input
-            type="email"
-            value={email}
-            placeholder="Email"
-            onChange={(e) => setEmail(e.target.value)}
-            className={s.input}
-          />
-        </label>
-        <label className={s.label}>
-          Password:
-          <input
-            type="password"
-            value={password}
-            placeholder="Password"
-            onChange={(e) => setPassword(e.target.value)}
-            className={s.input}
-          />
-        </label>
+
         <Link href="/choose-hero">
-          <Button type="submit" title="Go to the adventure" />
+          <Button
+            type="submit"
+            title="Go to the adventure"
+            disabled={username.length === 0}
+          />
         </Link>
       </form>
     </div>
