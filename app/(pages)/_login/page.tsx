@@ -7,7 +7,7 @@ import { FormEvent, useActionState, useState } from "react";
 import Link from "next/link";
 import { useDispatch, useSelector } from "react-redux";
 import { createUser } from "@/lib/features/users/usersSlice";
-import { AppDispatch, RootState } from "@/lib/store";
+import { AppDispatch, RootState } from "@/store/users";
 
 export default function LoginPage() {
   const dispatch = useDispatch<AppDispatch>();

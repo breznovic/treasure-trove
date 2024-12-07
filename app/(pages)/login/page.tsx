@@ -4,9 +4,9 @@ import { Button } from "@/app/components/Button/Button";
 import s from "./page.module.css";
 import Image from "next/image";
 import { ChangeEvent, useState } from "react";
-import Link from "next/link";
 import { useForm, SubmitHandler, FieldValues } from "react-hook-form";
-import { useUserStore } from "@/lib/store";
+import { useUserStore } from "@/store/users";
+import { useRouter } from "next/navigation";
 
 export default function LoginPage() {
   const {
@@ -19,15 +19,19 @@ export default function LoginPage() {
   const [username, setUsername] = useState("");
   const createUser = useUserStore((state) => state.createUser);
 
+  const router = useRouter();
+
   const setNewUsername = (e: ChangeEvent<HTMLInputElement>) =>
     setUsername(e.target.value);
 
   const onSubmit: SubmitHandler<FieldValues> = (data) => {
-    console.log("Form submitted with username:", username);
-    createUser(username);
+    const newUserId = createUser(username);
+    localStorage.setItem(
+      `user_${newUserId}`,
+      JSON.stringify({ id: newUserId, username })
+    );
+    router.push(`/choose-hero?userId=${newUserId}`);
   };
-
-  console.log("Rendering LoginPage with username:", username);
 
   return (
     <div className={s.main}>
@@ -43,7 +47,7 @@ export default function LoginPage() {
         <label className={s.label}>
           Enter your name:
           <input
-            {...register("Username", {
+            {...register("username", {
               required: "Username is required",
               minLength: {
                 value: 1,
@@ -55,22 +59,20 @@ export default function LoginPage() {
             placeholder="Username"
             onChange={(e) => {
               setNewUsername(e);
-              clearErrors("Username");
+              clearErrors("username");
             }}
             className={s.input}
           />
-          {errors.Username && (
-            <span className={s.error}>{errors.Username.message as string}</span>
+          {errors.username && (
+            <span className={s.error}>{errors.username.message as string}</span>
           )}
         </label>
 
-        <Link href="/choose-hero">
-          <Button
-            type="submit"
-            title="Go to the adventure"
-            disabled={username.length === 0}
-          />
-        </Link>
+        <Button
+          type="submit"
+          title="Go to the adventure"
+          disabled={username.length === 0}
+        />
       </form>
     </div>
   );

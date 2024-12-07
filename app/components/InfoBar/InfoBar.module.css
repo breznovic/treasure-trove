@@ -1,0 +1,35 @@
+.main {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 5px;
+}
+
+.container {
+  position: relative;
+  height: 22px;
+  width: 220px;
+  background-color: wheat;
+  border-radius: 10px;
+}
+
+.bar {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  height: 22px;
+  background-color: crimson;
+  border-radius: 10px;
+}
+
+.bar span {
+  position: relative;
+  left: 230px;
+}
+
+.number {
+  color: black;
+  position: relative;
+  left: 15px;
+}
