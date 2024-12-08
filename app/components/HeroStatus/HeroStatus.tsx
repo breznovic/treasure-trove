@@ -28,7 +28,12 @@ const HeroStatus = ({ hero, username }: Props) => {
           ))}
         </div>
       </div>
-      <InfoBar HP={hero.HP} maxHP={hero.maxHP} XP={hero.XP} />
+      <InfoBar
+        HP={hero.HP}
+        maxHP={hero.maxHP}
+        XP={hero.XP}
+        xpToLevel={hero.xpToLevel}
+      />
     </div>
   );
 };

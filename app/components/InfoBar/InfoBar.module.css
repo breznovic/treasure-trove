@@ -1,4 +1,7 @@
 .main {
+}
+
+.health {
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -8,7 +11,7 @@
 .container {
   position: relative;
   height: 22px;
-  width: 220px;
+  width: 200px;
   background-color: wheat;
   border-radius: 10px;
 }
@@ -19,7 +22,6 @@
   align-items: center;
   position: absolute;
   height: 22px;
-  background-color: crimson;
   border-radius: 10px;
 }
 
@@ -32,4 +34,11 @@
   color: black;
   position: relative;
   left: 15px;
+}
+
+.exp {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 31px;
 }

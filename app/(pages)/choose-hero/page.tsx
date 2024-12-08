@@ -49,6 +49,7 @@ export default function ChooseHero() {
           HP: calculatedHP,
           maxHP: calculatedHP,
           XP: 0,
+          xpToLevel: 10,
           points: 0,
         };
         createHero(userId, newHero);

@@ -15,6 +15,7 @@ export const useUserStore = create<UserState>()(
   persist(
     (set, getState) => ({
       users: [],
+
       createUser: (username) => {
         const newUser: User = {
           id: uuidv4(),
@@ -23,6 +24,8 @@ export const useUserStore = create<UserState>()(
           currentScore: 0,
           maxScore: 0,
         };
+
+        console.log(newUser);
 
         set((state) => {
           const updatedUsers = [...state.users, newUser];

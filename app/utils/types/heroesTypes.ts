@@ -20,5 +20,6 @@ export type Hero = {
   HP: number;
   maxHP: number;
   XP: number;
+  xpToLevel: number;
   points: number;
 };

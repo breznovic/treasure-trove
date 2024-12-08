@@ -7,6 +7,7 @@ import { ChangeEvent, useState } from "react";
 import { useForm, SubmitHandler, FieldValues } from "react-hook-form";
 import { useUserStore } from "@/store/users";
 import { useRouter } from "next/navigation";
+import { User } from "@/app/utils/types/usersTypes";
 
 export default function LoginPage() {
   const {
@@ -14,10 +15,11 @@ export default function LoginPage() {
     handleSubmit,
     formState: { errors },
     clearErrors,
-  } = useForm({ mode: "all" });
+  } = useForm({ mode: "onTouched" });
 
   const [username, setUsername] = useState("");
   const createUser = useUserStore((state) => state.createUser);
+  const users = useUserStore((state) => state.users);
 
   const router = useRouter();
 
@@ -25,12 +27,32 @@ export default function LoginPage() {
     setUsername(e.target.value);
 
   const onSubmit: SubmitHandler<FieldValues> = (data) => {
-    const newUserId = createUser(username);
-    localStorage.setItem(
-      `user_${newUserId}`,
-      JSON.stringify({ id: newUserId, username })
+    const existingUserFromLocalStorage = Object.values(localStorage)
+      .map((item) => JSON.parse(item))
+      .find((user: User) => user.username === username);
+
+    const existingUserFromStore = users.find(
+      (user) => user.username === username
     );
-    router.push(`/choose-hero?userId=${newUserId}`);
+
+    if (existingUserFromLocalStorage || existingUserFromStore) {
+      const existingUserId =
+        existingUserFromLocalStorage?.id || existingUserFromStore?.id;
+      router.push(`/town?userId=${existingUserId}`);
+    } else {
+      const newUserId = createUser(username);
+      localStorage.setItem(
+        `user_${newUserId}`,
+        JSON.stringify({ id: newUserId, username })
+      );
+      router.push(`/choose-hero?userId=${newUserId}`);
+    }
+  };
+
+  const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter") {
+      handleSubmit(onSubmit)();
+    }
   };
 
   return (
@@ -61,6 +83,7 @@ export default function LoginPage() {
               setNewUsername(e);
               clearErrors("username");
             }}
+            onKeyDown={handleKeyPress}
             className={s.input}
           />
           {errors.username && (

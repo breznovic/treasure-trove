@@ -5,7 +5,9 @@ import s from "./page.module.css";
 import { Hero } from "@/app/utils/types/heroesTypes";
 import { useSearchParams } from "next/navigation";
 import HeroStatus from "@/app/components/HeroStatus/HeroStatus";
-import { User } from "@/app/utils/types/usersTypes";
+import { useUserStore } from "@/store/users";
+import Image from "next/image";
+import clsx from "clsx";
 
 export default function TownPage() {
   const [hero, setHero] = useState<Hero | null>(null);
@@ -16,15 +18,15 @@ export default function TownPage() {
   useEffect(() => {
     if (userId) {
       const heroString = localStorage.getItem(`hero_${userId}`);
-      const userString = localStorage.getItem(`user_${userId}`);
+
+      const user = useUserStore.getState().getUserById(userId);
 
       if (heroString) {
         const hero: Hero = JSON.parse(heroString);
         setHero(hero);
       }
 
-      if (userString) {
-        const user: User = JSON.parse(userString);
+      if (user) {
         setUsername(user.username);
       }
     }
@@ -41,7 +43,28 @@ export default function TownPage() {
             <p>No hero found.</p>
           )}
         </div>
-        <div className={s.content}>Buildings</div>
+        <div className={s.buildings}>
+          <div className={s.building}>
+            <img
+              src="/dungeon.png"
+              alt="Door to the dungeon"
+              className={s.image}
+            />
+            <button className={s.button}>Go to the dungeon</button>
+          </div>
+          <div className={s.building}>
+            <img src="/tavern.png" alt="Tavern" className={s.image} />
+            <button className={clsx(s.button, s.disabled)} disabled>
+              Closed before release
+            </button>
+          </div>
+          <div className={s.building}>
+            <img src="/blacksmith.png" alt="Blacksmith" className={s.image} />
+            <button className={clsx(s.button, s.disabled)} disabled>
+              Closed before release
+            </button>
+          </div>
+        </div>
       </div>
     </div>
   );
