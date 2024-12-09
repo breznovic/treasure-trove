@@ -3,10 +3,9 @@
 import { useEffect, useState } from "react";
 import s from "./page.module.css";
 import { Hero } from "@/app/utils/types/heroesTypes";
-import { useSearchParams } from "next/navigation";
-import HeroStatus from "@/app/components/HeroStatus/HeroStatus";
+import { useRouter, useSearchParams } from "next/navigation";
+import HeroStatus from "@/app/components/StatusBar/StatusBar";
 import { useUserStore } from "@/store/users";
-import Image from "next/image";
 import clsx from "clsx";
 
 export default function TownPage() {
@@ -14,6 +13,8 @@ export default function TownPage() {
   const [username, setUsername] = useState<string | null>(null);
   const searchParams = useSearchParams();
   const userId = searchParams.get("userId");
+
+  const router = useRouter();
 
   useEffect(() => {
     if (userId) {
@@ -31,6 +32,12 @@ export default function TownPage() {
       }
     }
   }, [userId]);
+
+  const toSkirmish = () => {
+    if (userId) {
+      router.push(`/skirmish?userId=${userId}`);
+    }
+  };
 
   return (
     <div className={s.main}>
@@ -50,7 +57,9 @@ export default function TownPage() {
               alt="Door to the dungeon"
               className={s.image}
             />
-            <button className={s.button}>Go to the dungeon</button>
+            <button className={s.button} onClick={toSkirmish}>
+              Go to the dungeon
+            </button>
           </div>
           <div className={s.building}>
             <img src="/tavern.png" alt="Tavern" className={s.image} />
@@ -60,6 +69,7 @@ export default function TownPage() {
           </div>
           <div className={s.building}>
             <img src="/blacksmith.png" alt="Blacksmith" className={s.image} />
+
             <button className={clsx(s.button, s.disabled)} disabled>
               Closed before release
             </button>

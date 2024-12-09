@@ -1,22 +1,23 @@
 import s from "./InfoBar.module.css";
 
 type Props = {
-  HP: number;
-  maxHP: number;
+  HP?: number;
+  maxHP?: number;
   XP?: number;
   xpToLevel?: number;
 };
 const InfoBar = ({ HP, maxHP, XP, xpToLevel }: Props) => {
-  const currentHealthPercentage = (HP / maxHP) * 100;
-
   let currentExpPercentage = 0;
+
+  let currentHealthPercentage = 0;
+
+  if (HP !== undefined && maxHP !== undefined) {
+    currentHealthPercentage = (HP / maxHP) * 100;
+  }
 
   if (XP !== undefined && xpToLevel !== undefined) {
     currentExpPercentage = (XP / xpToLevel) * 100;
   }
-
-  console.log(XP);
-  console.log(xpToLevel);
 
   const computeHealthBarColor = () => {
     if (currentHealthPercentage === 100) {

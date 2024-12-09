@@ -5,8 +5,8 @@ export type HeroClass = {
   imageUrl: string;
 };
 
-export type HeroParameter = {
-  id: number;
+export type Parameter = {
+  id?: number;
   title: string;
   value: number;
 };
@@ -15,7 +15,7 @@ export type Hero = {
   id: string;
   class: HeroClass;
   imageUrl: string;
-  parameters: HeroParameter[];
+  parameters: Parameter[];
   level: number;
   HP: number;
   maxHP: number;
