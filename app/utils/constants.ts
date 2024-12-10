@@ -18,8 +18,6 @@ export const parameters: Parameter[] = [
   { id: 6, title: "Luck", value: 0 },
 ];
 
-const mobsHP = parameters[1].value * 2;
-
 export const mobs: Mob[] = [
   {
     id: 1,
@@ -34,8 +32,9 @@ export const mobs: Mob[] = [
       { title: "Luck", value: 1 },
     ],
     level: 1,
-    HP: 10 + mobsHP,
-    maxHP: 10 + mobsHP,
+    HP: 10,
+    maxHP: 10,
+    expPoints: 1,
     scorePoints: 5,
   },
   {
@@ -51,8 +50,9 @@ export const mobs: Mob[] = [
       { title: "Luck", value: 0 },
     ],
     level: 1,
-    HP: 10 + mobsHP,
-    maxHP: 10 + mobsHP,
+    HP: 12,
+    maxHP: 12,
+    expPoints: 2,
     scorePoints: 10,
   },
   {
@@ -68,8 +68,9 @@ export const mobs: Mob[] = [
       { title: "Luck", value: 0 },
     ],
     level: 1,
-    HP: 10 + mobsHP,
-    maxHP: 10 + mobsHP,
+    HP: 16,
+    maxHP: 16,
+    expPoints: 3,
     scorePoints: 15,
   },
   {
@@ -85,8 +86,9 @@ export const mobs: Mob[] = [
       { title: "Luck", value: 1 },
     ],
     level: 1,
-    HP: 10 + mobsHP,
-    maxHP: 10 + mobsHP,
+    HP: 18,
+    maxHP: 18,
+    expPoints: 4,
     scorePoints: 20,
   },
 ];

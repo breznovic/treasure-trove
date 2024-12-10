@@ -9,13 +9,13 @@ import Parameters from "@/app/components/Parameters/Parameters";
 import { heroesClasses } from "@/app/utils/constants";
 import { useSearchParams } from "next/navigation";
 import { useUserStore } from "@/store/users";
-import { Hero, HeroParameter } from "@/app/utils/types/heroesTypes";
+import { Hero, Parameter } from "@/app/utils/types/heroesTypes";
 import { v4 as uuidv4 } from "uuid";
 
 export default function ChooseHero() {
   const [activeId, setActiveId] = useState<number | null>(null);
   const [points, setPoints] = useState(3);
-  const [parameters, setParameters] = useState<HeroParameter[]>([]);
+  const [parameters, setParameters] = useState<Parameter[]>([]);
   const searchParams = useSearchParams();
   const userId = searchParams.get("userId");
   const createHero = useUserStore((state) => state.createHero);
@@ -62,7 +62,7 @@ export default function ChooseHero() {
     }
   };
 
-  const handleParametersChange = (newParameters: HeroParameter[]) => {
+  const handleParametersChange = (newParameters: Parameter[]) => {
     setParameters(newParameters);
   };
 

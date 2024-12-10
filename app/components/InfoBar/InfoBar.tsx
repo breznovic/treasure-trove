@@ -42,23 +42,28 @@ const InfoBar = ({ HP, maxHP, XP, xpToLevel }: Props) => {
 
   return (
     <div className={s.main}>
-      <div className={s.health}>
-        <div>Health:</div>
-        <div className={s.container}>
-          <div
-            className={s.bar}
-            style={{
-              width: `${currentHealthPercentage}%`,
-              minWidth: "30px",
-              backgroundColor: computeHealthBarColor(),
-            }}
-          >
-            <div className={s.number}>
-              {Math.floor(currentHealthPercentage)}%
+      {HP !== 0 ? (
+        <div className={s.health}>
+          <div>Health:</div>
+          <div className={s.container}>
+            <div
+              className={s.bar}
+              style={{
+                width: `${currentHealthPercentage}%`,
+                minWidth: "30px",
+                backgroundColor: computeHealthBarColor(),
+              }}
+            >
+              <div className={s.number}>
+                {Math.floor(currentHealthPercentage)}%
+              </div>
             </div>
           </div>
+          {HP}/{maxHP}
         </div>
-      </div>
+      ) : (
+        "Dead!"
+      )}
       {XP !== undefined && xpToLevel !== undefined ? (
         <div className={s.exp}>
           <div>Exp:</div>
@@ -76,6 +81,7 @@ const InfoBar = ({ HP, maxHP, XP, xpToLevel }: Props) => {
               </div>
             </div>
           </div>
+          {XP}/{xpToLevel}
         </div>
       ) : (
         ""

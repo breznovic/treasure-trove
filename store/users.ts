@@ -25,8 +25,6 @@ export const useUserStore = create<UserState>()(
           maxScore: 0,
         };
 
-        console.log(newUser);
-
         set((state) => {
           const updatedUsers = [...state.users, newUser];
           return { users: updatedUsers };

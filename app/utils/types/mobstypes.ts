@@ -8,5 +8,7 @@ export type Mob = {
   level: number;
   HP: number;
   maxHP: number;
+  isDead?: boolean;
+  expPoints: number;
   scorePoints: number;
 };

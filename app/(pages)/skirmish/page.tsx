@@ -8,30 +8,41 @@ import { useUserStore } from "@/store/users";
 import StatusBar from "@/app/components/StatusBar/StatusBar";
 import { Mob } from "@/app/utils/types/mobstypes";
 import useMobStore from "@/store/mobs";
+import { useHeroStore } from "@/store/hero";
 
 export default function SkirmishPage() {
   const [hero, setHero] = useState<Hero | null>(null);
   const [username, setUsername] = useState<string | null>(null);
   const [mob, setMob] = useState<Mob | null>(null);
+  const [notification, setNotification] = useState<string | null>(null);
   const searchParams = useSearchParams();
   const userId = searchParams.get("userId");
 
-  const randomMob = useMobStore((state) => state.getRandomMob());
+  const getRandomMob = useMobStore((state) => state.getRandomMob);
+  const getHeroById = useHeroStore((state) => state.getHeroById);
+  const decreaseMobHealth = useMobStore((state) => state.decreaseMobHealth);
+  const mobs = useMobStore((state) => state.mobs);
+  const getNextMob = useMobStore((state) => state.getNextMob);
 
   useEffect(() => {
-    if (randomMob) {
-      setMob(randomMob);
+    const storedMob = localStorage.getItem("currentMob");
+    if (storedMob) {
+      setMob(JSON.parse(storedMob));
+    } else {
+      const newMob = getRandomMob();
+      if (newMob) {
+        setMob(newMob);
+        localStorage.setItem("currentMob", JSON.stringify(newMob));
+      }
     }
-  }, [randomMob]);
+  }, [getRandomMob]);
 
   useEffect(() => {
     if (userId) {
-      const heroString = localStorage.getItem(`hero_${userId}`);
-
+      const hero = getHeroById(userId);
       const user = useUserStore.getState().getUserById(userId);
 
-      if (heroString) {
-        const hero: Hero = JSON.parse(heroString);
+      if (hero) {
         setHero(hero);
       }
 
@@ -39,9 +50,32 @@ export default function SkirmishPage() {
         setUsername(user.username);
       }
     }
-  }, [userId]);
+  }, [userId, getHeroById]);
 
-  let notification = null;
+  useEffect(() => {
+    if (mob) {
+      const updatedMob = mobs.find((m) => m.id === mob.id);
+      if (updatedMob) {
+        setMob(updatedMob);
+      }
+
+      if (updatedMob && updatedMob.HP <= 0) {
+        const deadMob = {
+          ...mob,
+          isDead: true,
+          imageUrl: "/dead.png",
+        };
+        setMob(deadMob);
+        setNotification(`You kill ${deadMob.title}`);
+
+        setTimeout(() => {
+          const newMob = getNextMob();
+          setMob(newMob);
+          setNotification(null);
+        }, 1000);
+      }
+    }
+  }, [mobs, mob, getNextMob]);
 
   return (
     <div className={s.main}>
@@ -59,9 +93,14 @@ export default function SkirmishPage() {
         </div>
       </div>
       <div className={s.notification}>
-        {notification ? notification : `"You meet ${mob?.title}"`}
+        {notification ? notification : `You meet ${mob?.title}`}
       </div>
-      <button className={s.button}>Attack!</button>
+      <button
+        className={s.button}
+        onClick={() => decreaseMobHealth(mob?.id, 5)}
+      >
+        Attack!
+      </button>
     </div>
   );
 }
